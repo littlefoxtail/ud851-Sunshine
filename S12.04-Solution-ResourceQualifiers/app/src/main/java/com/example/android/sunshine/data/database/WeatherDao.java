@@ -28,6 +28,6 @@ public interface WeatherDao {
     @Query("SELECT COUNT(id) From weather WHERE date >= :date")
     int countAllFutureWeather(Date date);
 
-    @Query("SELECT * FROM weather WHERE data = :date")
+    @Query("SELECT * FROM weather WHERE date = :date")
     LiveData<WeatherEntry> getWeatherByDate(Date date);
 }

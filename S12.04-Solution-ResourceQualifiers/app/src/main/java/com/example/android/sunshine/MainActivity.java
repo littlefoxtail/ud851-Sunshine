@@ -41,6 +41,8 @@ import com.example.android.sunshine.ui.list.MainActivityViewModel;
 import com.example.android.sunshine.ui.list.MainViewModelFactory;
 import com.example.android.sunshine.utilities.InjectorUtils;
 
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         ForecastAdapter.ForecastAdapterOnClickHandler {
@@ -151,20 +153,25 @@ public class MainActivity extends AppCompatActivity implements
         MainViewModelFactory factory = InjectorUtils.provideMainActivityViewModelFactory(this);
         mViewModel = ViewModelProviders.of(this, factory).get(MainActivityViewModel.class);
         mViewModel.getForecast().observe(this, weatherEntries -> {
+            Log.i(TAG, "observe=> " + weatherEntries);
 
+            mForecastAdapter.swapForecast(weatherEntries);
 
+            if (mPosition == RecyclerView.NO_POSITION) mPosition = 0;
+            mRecyclerView.smoothScrollToPosition(mPosition);
+
+            if (weatherEntries != null && weatherEntries.size() != 0) showWeatherDataView();
+            else showLoading();
         });
-
-        showLoading();
 
         /*
          * Ensures a loader is initialized and active. If the loader doesn't already exist, one is
          * created and (if the activity/fragment is currently started) starts the loader. Otherwise
          * the last created loader is re-used.
          */
-        getSupportLoaderManager().initLoader(ID_FORECAST_LOADER, null, this);
-
-        SunshineSyncUtils.initialize(this);
+//        getSupportLoaderManager().initLoader(ID_FORECAST_LOADER, null, this);
+//
+//        SunshineSyncUtils.initialize(this);
 
     }
 
@@ -248,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
 
-        mForecastAdapter.swapCursor(data);
+//        mForecastAdapter.swapCursor(data);
         if (mPosition == RecyclerView.NO_POSITION) mPosition = 0;
         mRecyclerView.smoothScrollToPosition(mPosition);
         if (data.getCount() != 0) showWeatherDataView();
@@ -266,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements
          * Since this Loader's data is now invalid, we need to clear the Adapter that is
          * displaying the data.
          */
-        mForecastAdapter.swapCursor(null);
+//        mForecastAdapter.swapCursor(null);
     }
 
     /**
@@ -276,10 +283,10 @@ public class MainActivity extends AppCompatActivity implements
      * @see WeatherContract.WeatherEntry#COLUMN_DATE
      */
     @Override
-    public void onClick(long date) {
+    public void onClick(Date date) {
         Intent weatherDetailIntent = new Intent(MainActivity.this, DetailActivity.class);
-        Uri uriForDateClicked = WeatherContract.WeatherEntry.buildWeatherUriWithDate(date);
-        weatherDetailIntent.setData(uriForDateClicked);
+        long timestamp = date.getTime();
+        weatherDetailIntent.putExtra(DetailActivity.WEATHER_ID_EXTRA, timestamp);
         startActivity(weatherDetailIntent);
     }
 
