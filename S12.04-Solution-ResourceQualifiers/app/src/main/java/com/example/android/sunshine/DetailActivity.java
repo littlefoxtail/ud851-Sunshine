@@ -139,7 +139,7 @@ public class DetailActivity extends AppCompatActivity implements
          * Weather Icon *
          ****************/
         /* Read weather condition ID from the cursor (ID provided by Open Weather Map) */
-        int weatherId = weatherEntry.getWeatherlconld();
+        int weatherId = weatherEntry.getWeatherIconId();
         /* Use our utility method to determine the resource ID for the proper art */
         int weatherImageId = SunshineWeatherUtils.getLargeArtResourceIdForWeatherCondition(weatherId);
 

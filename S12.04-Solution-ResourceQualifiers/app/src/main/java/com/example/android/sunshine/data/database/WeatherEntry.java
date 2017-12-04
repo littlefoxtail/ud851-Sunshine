@@ -16,7 +16,7 @@ public class WeatherEntry {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private int weatherlconld;
+    private int weatherIconId;
     private Date date;
     private double min;
     private double max;
@@ -25,9 +25,9 @@ public class WeatherEntry {
     private double wind;
     private double degrees;
 
-    public WeatherEntry(int id, int weatherlconld, Date date, double min, double max, double humidity, double pressure, double wind, double degrees) {
+    public WeatherEntry(int id, int weatherIconId, Date date, double min, double max, double humidity, double pressure, double wind, double degrees) {
         this.id = id;
-        this.weatherlconld = weatherlconld;
+        this.weatherIconId = weatherIconId;
         this.date = date;
         this.min = min;
         this.max = max;
@@ -38,8 +38,8 @@ public class WeatherEntry {
     }
 
     @Ignore
-    public WeatherEntry(int weatherlconld, Date date, double min, double max, double humidity, double pressure, double wind, double degrees) {
-        this.weatherlconld = weatherlconld;
+    public WeatherEntry(int weatherIconId, Date date, double min, double max, double humidity, double pressure, double wind, double degrees) {
+        this.weatherIconId = weatherIconId;
         this.date = date;
         this.min = min;
         this.max = max;
@@ -53,8 +53,8 @@ public class WeatherEntry {
         return id;
     }
 
-    public int getWeatherlconld() {
-        return weatherlconld;
+    public int getWeatherIconId() {
+        return weatherIconId;
     }
 
     public Date getDate() {

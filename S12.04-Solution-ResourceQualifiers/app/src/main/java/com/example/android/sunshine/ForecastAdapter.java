@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.android.sunshine.data.database.ListWeatherEntry;
 import com.example.android.sunshine.data.database.WeatherEntry;
 import com.example.android.sunshine.utilities.SunshineDateUtils;
 import com.example.android.sunshine.utilities.SunshineWeatherUtils;
@@ -69,7 +70,7 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
     private boolean mUseTodayLayout;
 
 
-    private List<WeatherEntry> forecast;
+    private List<ListWeatherEntry> forecast;
 
     /**
      * Creates a ForecastAdapter.
@@ -136,12 +137,12 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
     @Override
     public void onBindViewHolder(ForecastAdapterViewHolder forecastAdapterViewHolder, int position) {
 
-        WeatherEntry weatherEntry = forecast.get(position);
+        ListWeatherEntry weatherEntry = forecast.get(position);
 
         /****************
          * Weather Icon *
          ****************/
-        int weatherId = weatherEntry.getWeatherlconld();
+        int weatherId = weatherEntry.getWeatherIconId();
         int weatherImageId;
 
         int viewType = getItemViewType(position);
@@ -255,7 +256,7 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
     }
 
 
-    void swapForecast(final List<WeatherEntry> newForecast) {
+    void swapForecast(final List<ListWeatherEntry> newForecast) {
         if (forecast == null) {
             forecast = newForecast;
             notifyDataSetChanged();
@@ -279,8 +280,8 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    WeatherEntry newWeather = newForecast.get(newItemPosition);
-                    WeatherEntry oldWeather = forecast.get(oldItemPosition);
+                    ListWeatherEntry newWeather = newForecast.get(newItemPosition);
+                    ListWeatherEntry oldWeather = forecast.get(oldItemPosition);
                     return newWeather.getId() == oldWeather.getId()
                             && newWeather.getDate().equals(oldWeather.getDate());
                 }
