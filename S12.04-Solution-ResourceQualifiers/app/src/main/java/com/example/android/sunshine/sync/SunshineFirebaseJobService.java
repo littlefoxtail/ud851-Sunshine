@@ -18,6 +18,8 @@ package com.example.android.sunshine.sync;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.example.android.sunshine.data.network.WeatherNetworkDataSource;
+import com.example.android.sunshine.utilities.InjectorUtils;
 import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
@@ -41,22 +43,11 @@ public class SunshineFirebaseJobService extends JobService {
     @Override
     public boolean onStartJob(final JobParameters jobParameters) {
 
-        mFetchWeatherTask = new AsyncTask<Void, Void, Void>(){
-            @Override
-            protected Void doInBackground(Void... voids) {
-                Context context = getApplicationContext();
-                SunshineSyncTask.syncWeather(context);
-                jobFinished(jobParameters, false);
-                return null;
-            }
+        WeatherNetworkDataSource networkDataSource =
+                InjectorUtils.provideNetworkDataSource(this.getApplicationContext());
+        networkDataSource.fetchWeather();
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                jobFinished(jobParameters, false);
-            }
-        };
-
-        mFetchWeatherTask.execute();
+        jobFinished(jobParameters, false);
         return true;
     }
 

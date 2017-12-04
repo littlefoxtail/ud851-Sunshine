@@ -62,6 +62,8 @@ public class SunshineRepository {
     public synchronized void initializeData() {
         if (mInitialized) return;
         mInitialized = true;
+
+        networkDataSource.scheduleRecurringFetchWeatherSync();
         executors.diskIO().execute(() -> {
             if (isFetchNeeded()) {
                 startFetchWeatherService();
