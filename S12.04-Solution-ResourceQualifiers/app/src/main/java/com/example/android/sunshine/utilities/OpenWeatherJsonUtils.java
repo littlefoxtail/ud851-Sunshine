@@ -116,7 +116,7 @@ public final class OpenWeatherJsonUtils {
 //        long now = System.currentTimeMillis();
 //        long normalizedUtcStartDay = SunshineDateUtils.normalizeDate(now);
 
-        long normalizedUtcStartDay = SunshineDateUtils.getNormalizedUtcDateForToday();
+        long normalizedUtcStartDay = SunshineDateUtils.getNormalizedUtcMsForToday();
 
         for (int i = 0; i < jsonWeatherArray.length(); i++) {
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.sunshine.utilities;
+package com.example.android.sunshine.data.network;
 
 import android.content.Context;
 import android.net.Uri;
@@ -82,6 +82,16 @@ public final class NetworkUtils {
     private static final String UNITS_PARAM = "units";
     /* The days parameter allows us to designate how many days of weather data we want */
     private static final String DAYS_PARAM = "cnt";
+    /**
+     * Retrieves the proper URL to query for the weather data.
+     *
+     * @return URL to query weather service
+     */
+    static URL getUrl() {
+        String locationQuery = "Mountain View, CA";
+        return buildUrlWithLocationQuery(locationQuery);
+    }
+
 
     /**
      * Retrieves the proper URL to query for the weather data. The reason for both this method as

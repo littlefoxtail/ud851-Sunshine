@@ -1,16 +1,22 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.1'
 
     defaultConfig {
         applicationId "com.example.android.sunshine"
-        minSdkVersion 10
-        targetSdkVersion 25
+        minSdkVersion 14
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
     buildTypes {
         release {
@@ -18,24 +24,36 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     dataBinding.enabled = true
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile "com.android.support:appcompat-v7:$support_version"
 
-    compile 'com.android.support:recyclerview-v7:25.0.1'
-    compile 'com.android.support:preference-v7:25.0.1'
+    compile "com.android.support:recyclerview-v7:$support_version"
+    compile "com.android.support:preference-v7:$support_version"
 
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta3'
+    compile "android.arch.persistence.room:runtime:$arch_version"
+    annotationProcessor "android.arch.persistence.room:compiler:$arch_version"
 
-    compile 'com.firebase:firebase-jobdispatcher:0.5.0'
+    compile "android.arch.lifecycle:runtime:$arch_version"
+    compile "android.arch.lifecycle:extensions:$arch_version"
+    annotationProcessor "android.arch.lifecycle:compiler:$arch_version"
+
+
+    compile "com.android.support.constraint:constraint-layout:$constraint_layout_version"
+    compile "com.firebase:firebase-jobdispatcher:$firebase_jobdispatcher_version"
 
     // Instrumentation dependencies use androidTestCompile
     // (as opposed to testCompile for local unit tests run in the JVM)
-    androidTestCompile 'junit:junit:4.12'
-    androidTestCompile 'com.android.support:support-annotations:25.1.0'
-    androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support.test:rules:0.5'
+    androidTestCompile "junit:junit:$junit_version"
+    androidTestCompile "com.android.support:support-annotations:$support_version"
+    androidTestCompile "com.android.support.test:runner:$support_test_version"
+    androidTestCompile "com.android.support.test:rules:$support_test_version"
 }

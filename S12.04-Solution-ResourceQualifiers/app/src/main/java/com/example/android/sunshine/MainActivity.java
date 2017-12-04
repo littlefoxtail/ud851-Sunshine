@@ -15,6 +15,8 @@
  */
 package com.example.android.sunshine;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -35,6 +37,9 @@ import android.widget.ProgressBar;
 import com.example.android.sunshine.data.SunshinePreferences;
 import com.example.android.sunshine.data.WeatherContract;
 import com.example.android.sunshine.sync.SunshineSyncUtils;
+import com.example.android.sunshine.ui.list.MainActivityViewModel;
+import com.example.android.sunshine.ui.list.MainViewModelFactory;
+import com.example.android.sunshine.utilities.InjectorUtils;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -78,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements
     private int mPosition = RecyclerView.NO_POSITION;
 
     private ProgressBar mLoadingIndicator;
+    private MainActivityViewModel mViewModel;
 
 
     @Override
@@ -142,6 +148,12 @@ public class MainActivity extends AppCompatActivity implements
         /* Setting the adapter attaches it to the RecyclerView in our layout. */
         mRecyclerView.setAdapter(mForecastAdapter);
 
+        MainViewModelFactory factory = InjectorUtils.provideMainActivityViewModelFactory(this);
+        mViewModel = ViewModelProviders.of(this, factory).get(MainActivityViewModel.class);
+        mViewModel.getForecast().observe(this, weatherEntries -> {
+
+
+        });
 
         showLoading();
 

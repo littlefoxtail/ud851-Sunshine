@@ -22,7 +22,7 @@ import android.text.format.DateUtils;
 
 import com.example.android.sunshine.data.SunshinePreferences;
 import com.example.android.sunshine.data.WeatherContract;
-import com.example.android.sunshine.utilities.NetworkUtils;
+import com.example.android.sunshine.data.network.NetworkUtils;
 import com.example.android.sunshine.utilities.NotificationUtils;
 import com.example.android.sunshine.utilities.OpenWeatherJsonUtils;
 

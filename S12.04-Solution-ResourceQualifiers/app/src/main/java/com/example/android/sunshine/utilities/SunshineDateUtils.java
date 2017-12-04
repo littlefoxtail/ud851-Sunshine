@@ -17,10 +17,12 @@ package com.example.android.sunshine.utilities;
 
 import android.content.Context;
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import com.example.android.sunshine.R;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -28,6 +30,8 @@ import java.util.concurrent.TimeUnit;
  * Class for handling date conversions that are useful for Sunshine.
  */
 public final class SunshineDateUtils {
+
+    private static final String LOG_TAG = SunshineDateUtils.class.getSimpleName();
 
     /* Milliseconds in a day */
     public static final long DAY_IN_MILLIS = TimeUnit.DAYS.toMillis(1);
@@ -55,7 +59,7 @@ public final class SunshineDateUtils {
      * @return The number of milliseconds (UTC / GMT) for today's date at midnight in the local
      * time zone
      */
-    public static long getNormalizedUtcDateForToday() {
+    public static long getNormalizedUtcMsForToday() {
 
         /*
          * This number represents the number of milliseconds that have elapsed since January
@@ -95,6 +99,11 @@ public final class SunshineDateUtils {
         long normalizedUtcMidnightMillis = TimeUnit.DAYS.toMillis(daysSinceEpochLocal);
 
         return normalizedUtcMidnightMillis;
+    }
+
+    public static Date getNormalizedUtcDateForToday() {
+        long normalizedMilli = getNormalizedUtcMsForToday();
+        return new Date(normalizedMilli);
     }
 
     /**
@@ -305,5 +314,57 @@ public final class SunshineDateUtils {
                 SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
                 return dayFormat.format(dateInMillis);
         }
+    }
+
+    /**
+     * Helper method to provide the art resource ID according to the weather condition ID returned
+     * by the OpenWeatherMap call. This method is very similar to
+     * <p>
+     * {@link #getSmallArtResourceIdForWeatherCondition(int)}.
+     * <p>
+     * The difference between these two methods is that this method provides larger assets, used
+     * in the "today view" of the list, as well as in the DetailActivity.
+     *
+     * @param weatherId from OpenWeatherMap API response
+     *                  See http://openweathermap.org/weather-conditions for a list of all IDs
+     * @return resource ID for the corresponding icon. -1 if no relation is found.
+     */
+    public static int getLargeArtResourceIdForWeatherCondition(int weatherId) {
+
+        /*
+         * Based on weather code data for Open Weather Map.
+         */
+        if (weatherId >= 200 && weatherId <= 232) {
+            return R.drawable.art_storm;
+        } else if (weatherId >= 300 && weatherId <= 321) {
+            return R.drawable.art_light_rain;
+        } else if (weatherId >= 500 && weatherId <= 504) {
+            return R.drawable.art_rain;
+        } else if (weatherId == 511) {
+            return R.drawable.art_snow;
+        } else if (weatherId >= 520 && weatherId <= 531) {
+            return R.drawable.art_rain;
+        } else if (weatherId >= 600 && weatherId <= 622) {
+            return R.drawable.art_snow;
+        } else if (weatherId >= 701 && weatherId <= 761) {
+            return R.drawable.art_fog;
+        } else if (weatherId == 761 || weatherId == 771 || weatherId == 781) {
+            return R.drawable.art_storm;
+        } else if (weatherId == 800) {
+            return R.drawable.art_clear;
+        } else if (weatherId == 801) {
+            return R.drawable.art_light_clouds;
+        } else if (weatherId >= 802 && weatherId <= 804) {
+            return R.drawable.art_clouds;
+        } else if (weatherId >= 900 && weatherId <= 906) {
+            return R.drawable.art_storm;
+        } else if (weatherId >= 958 && weatherId <= 962) {
+            return R.drawable.art_storm;
+        } else if (weatherId >= 951 && weatherId <= 957) {
+            return R.drawable.art_clear;
+        }
+
+        Log.e(LOG_TAG, "Unknown Weather: " + weatherId);
+        return R.drawable.art_storm;
     }
 }

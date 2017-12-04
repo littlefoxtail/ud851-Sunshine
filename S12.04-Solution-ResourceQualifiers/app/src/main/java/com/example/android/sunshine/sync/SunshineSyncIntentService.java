@@ -18,6 +18,9 @@ package com.example.android.sunshine.sync;
 import android.app.IntentService;
 import android.content.Intent;
 
+import com.example.android.sunshine.data.network.WeatherNetworkDataSource;
+import com.example.android.sunshine.utilities.InjectorUtils;
+
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
@@ -30,6 +33,9 @@ public class SunshineSyncIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        SunshineSyncTask.syncWeather(this);
+        WeatherNetworkDataSource networkDataSource =
+                InjectorUtils.provideNetworkDataSource(this.getApplicationContext());
+
+        networkDataSource.fetchWeather();
     }
 }
